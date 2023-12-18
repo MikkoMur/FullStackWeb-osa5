@@ -1,16 +1,36 @@
-const BlogForm = (props) => {
+import { useState } from 'react'
+
+const BlogForm = ({ createBlog }) => {
+
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
+  const submitBlog = async (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url
+    }
+    createBlog(blogObject)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
+
   return (
     <div>
       <h2>Create new</h2>
-      <form onSubmit={props.submit}>
+      <form onSubmit={submitBlog}>
         <div>
-          Title: <input type="text" value={props.title} onChange={({ target }) => props.setTitle(target.value)}></input>
+          Title: <input type="text" value={title} onChange={({ target }) => setTitle(target.value)}></input>
         </div>
         <div>
-          Author: <input type="text" value={props.author} onChange={({ target }) => props.setAuthor(target.value)}></input>
+          Author: <input type="text" value={author} onChange={({ target }) => setAuthor(target.value)}></input>
         </div>
         <div>
-          Url: <input type="text" value={props.url} onChange={({ target }) => props.setUrl(target.value)}></input>
+          Url: <input type="text" value={url} onChange={({ target }) => setUrl(target.value)}></input>
         </div>
         <button type="submit">create</button>
       </form>

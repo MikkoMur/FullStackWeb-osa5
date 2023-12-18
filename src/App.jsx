@@ -1,15 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const [username, setUsername] = useState('')
@@ -30,6 +28,8 @@ const App = () => {
       blogService.setToken(user.token)    
     }  
   }, [])
+
+  const blogFormRef = useRef()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -102,19 +102,11 @@ const App = () => {
     )
   }
 
-  const submitBlog = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url
-    }
+  const createBlog = async (blogObject) => {
     const returnedBlog = await blogService.create(blogObject)
     setBlogs(blogs.concat(returnedBlog))
-    setSuccessMessage(`Created new blog: ${title} by ${author}`)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    setSuccessMessage(`Created new blog: ${blogObject.title} by ${blogObject.author}`)
+    blogFormRef.current.toggleVisibility()
     setTimeout(() => {
       setSuccessMessage(null)
     }, 3000)
@@ -128,16 +120,12 @@ const App = () => {
       {user && <div>
         <h2>blogs</h2>
         <p>{user.name} logged in <button onClick={() => handleLogout()}>logout</button></p>
+        <Togglable buttonLabel="New blog" ref={blogFormRef}>
           <BlogForm 
-            submit={submitBlog}
-            title={title}
-            author={author}
-            url={url}
-            setTitle={setTitle}
-            setAuthor={setAuthor}
-            setUrl={setUrl}
+            createBlog={createBlog}
           >
           </BlogForm>
+        </Togglable>
           {blogList()}
         </div>
       }

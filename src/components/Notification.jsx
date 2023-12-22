@@ -1,4 +1,6 @@
-const Notification = ({message, className}) => {
+import PropTypes from 'prop-types'
+
+const Notification = ({ message, className }) => {
   if (message === null) {
     return null
   }
@@ -8,6 +10,10 @@ const Notification = ({message, className}) => {
       {message}
     </div>
   )
+}
+
+Notification.propTypes = {
+  className: PropTypes.string.isRequired
 }
 
 export default Notification

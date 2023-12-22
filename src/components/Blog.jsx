@@ -32,14 +32,14 @@ const Blog = ({ blogProp, rmBlog, user }) => {
   const extraInfo = () => {
     return (
       <>
-      <br/>
+        <br/>
         {blog.url}
-      <br/>
+        <br/>
         likes: {blog.likes} <button onClick={like}>like</button>
-      <br/>
+        <br/>
         {blog.user.name}
-      <br/>
-        {blog.user.username == user.username && <button onClick={remove}>remove</button> }
+        <br/>
+        {blog.user.username === user.username && <button onClick={remove}>remove</button> }
       </>
     )
   }
@@ -53,12 +53,12 @@ const Blog = ({ blogProp, rmBlog, user }) => {
   }
 
   return (
-  <div style={blogStyle}>
-    {baseInfo()} 
-    {!showInfo && <button onClick={() => setShowInfo(!showInfo)}>show</button>}
-    {showInfo && <button onClick={() => setShowInfo(!showInfo)}>hide</button>}
-    {showInfo && extraInfo()}
-  </div>
+    <div style={blogStyle}>
+      {baseInfo()}
+      {!showInfo && <button onClick={() => setShowInfo(!showInfo)}>show</button>}
+      {showInfo && <button onClick={() => setShowInfo(!showInfo)}>hide</button>}
+      {showInfo && extraInfo()}
+    </div>
   )
 }
 

@@ -94,6 +94,19 @@ const App = () => {
 
   const removeBlog = (id) => {
     setBlogs(blogs.filter(blog => blog.id !== id))
+    blogService.remove(id)
+  }
+
+  const likeBlog = (id) => {
+    const newBlogs = structuredClone(blogs)
+    const idx = blogs.findIndex(blog => blog.id === id)
+    const newBlog = {
+      ...blogs[idx],
+      likes: blogs[idx].likes + 1
+    }
+    newBlogs[idx] = newBlog
+    blogService.update(id, newBlog)
+    setBlogs(newBlogs)
   }
 
   const blogList = () => {
@@ -101,7 +114,7 @@ const App = () => {
     return (
       <div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blogProp={blog} rmBlog={removeBlog} user={user}/>
+          <Blog key={blog.id} blog={blog} likeBlog={likeBlog} rmBlog={removeBlog} user={user}/>
         )}
       </div>
     )

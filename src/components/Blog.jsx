@@ -1,30 +1,22 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-const Blog = ({ blogProp, rmBlog, user }) => {
+const Blog = ({ blog, rmBlog, likeBlog, user }) => {
   const [showInfo, setShowInfo] = useState(false)
-  const [blog, setBlog] = useState(blogProp)
   const baseInfo = () => {
     return (
-      <>
+      <div>
         {blog.title} {blog.author}
-      </>
+      </div>
     )
   }
 
   const like = () => {
-    const newBlogObject = {
-      ...blog,
-      likes: blog.likes + 1
-    }
-    blogService.update(blog.id, newBlogObject)
-    setBlog(newBlogObject)
+    likeBlog(blog.id)
   }
 
   const remove = () => {
     if (window.confirm(`remove blog ${blog.title}?`))
     {
-      blogService.remove(blog.id)
       rmBlog(blog.id)
     }
   }
@@ -32,14 +24,18 @@ const Blog = ({ blogProp, rmBlog, user }) => {
   const extraInfo = () => {
     return (
       <>
-        <br/>
-        {blog.url}
-        <br/>
-        likes: {blog.likes} <button onClick={like}>like</button>
-        <br/>
-        {blog.user.name}
-        <br/>
-        {blog.user.username === user.username && <button onClick={remove}>remove</button> }
+        <div>
+          {blog.url}
+        </div>
+        <div>
+          likes: {blog.likes} <button onClick={like}>like</button>
+        </div>
+        <div>
+          {blog.user.name}
+        </div>
+        <div>
+          {blog.user.username === user.username && <button onClick={remove}>remove</button> }
+        </div>
       </>
     )
   }

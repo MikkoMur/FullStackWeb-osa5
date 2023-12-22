@@ -92,11 +92,16 @@ const App = () => {
     </form>      
   )
 
+  const removeBlog = (id) => {
+    setBlogs(blogs.filter(blog => blog.id != id))
+  }
+
   const blogList = () => {
+    blogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
     return (
       <div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blogProp={blog} rmBlog={removeBlog} user={user}/>
         )}
       </div>
     )
